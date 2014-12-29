@@ -1,5 +1,7 @@
 .gradle
 build/
+.settings
+*.jar
 
 # Ignore Gradle GUI config
 gradle-app.setting
