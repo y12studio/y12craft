@@ -13,7 +13,20 @@ public class DropEvent implements Listener {
 	public void onDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		ItemStack item = new ItemStack(Material.DIAMOND);
-		item.setDurability((short) 12);
+		item.setDurability((short) 1);
 		player.getWorld().dropItem(player.getLocation(), item);
+	}
+
+	@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent dead) {
+		Player p = dead.getPlayer();
+		p.sendMessage(ChatColor.RED + "You are dead " + p.getName());
+		p.sendMessage(ChatColor.GREEN + p.getName()
+		+ " Get the one Diamond and pickaxe!");
+		PlayerInventory inventory = p.getInventory();
+		ItemStack gavediamondondeath = new ItemStack(Material.DIAMOND, 1);
+		ItemStack gavemediamondpickaxeondeath = new ItemStack(
+		Material.DIAMOND_PICKAXE, 1);
+		inventory.addItem(gavediamondondeath, gavemediamondpickaxeondeath);
 	}
 }
