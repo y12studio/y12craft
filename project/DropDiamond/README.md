@@ -8,6 +8,16 @@ ls build/libs/DropDiamond-1.0.jar
 
 ## Test Report
 
+Tue Dec 30 08:26:02 CST 2014
+
+```
+$ docker build --no-cache=true -t y12craft/ddiamond .
+$ CID=$(docker run -d -p=25565:25565 y12craft/ddiamond)
+$ sudo docker-bash $CID
+```
+
+Tue Dec 30 00:26:02 CST 2014
+
 ```
 $ docker build --no-cache=true -t y12craft/ddiamond .
 $ docker run y12craft/ddiamond ls /opt/git/y12craft/project/DropDiamond/libs
