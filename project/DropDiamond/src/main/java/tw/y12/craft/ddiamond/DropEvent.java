@@ -49,8 +49,20 @@ public class DropEvent implements Listener {
 		int value = itemStack.getAmount();
 		player.sendMessage(ChatColor.YELLOW + "You got " + value + " "
 				+ ChatColor.AQUA + itemStack.getType().name());
-		if (itemStack.getType() == Material.DIAMOND && value == 3) {
-			player.sendMessage(ChatColor.YELLOW + "[TODO]");
+		if (itemStack.getType() == Material.DIAMOND) {
+			if (value == 4) {
+				player.sendMessage(ChatColor.YELLOW + "[Pick4Diamond]");
+				ItemStack dHelmet = new ItemStack(Material.DIAMOND_HELMET, 1);
+				ItemStack dBoots = new ItemStack(Material.DIAMOND_BOOTS, 1);
+				ItemStack dChestplate = new ItemStack(
+						Material.DIAMOND_CHESTPLATE, 1);
+				ItemStack dLeggings = new ItemStack(Material.DIAMOND_LEGGINGS,
+						1);
+				player.getInventory().addItem(dHelmet, dBoots, dChestplate,
+						dLeggings);
+			} else if (value == 5) {
+				// TODO
+			}
 		}
 	}
 
@@ -62,13 +74,8 @@ public class DropEvent implements Listener {
 		ItemStack dPickaxe = new ItemStack(Material.DIAMOND_PICKAXE, 1);
 		ItemStack dAxe = new ItemStack(Material.DIAMOND_AXE, 1);
 		ItemStack dSword = new ItemStack(Material.DIAMOND_SWORD, 1);
-		ItemStack dHelmet = new ItemStack(Material.DIAMOND_HELMET, 1);
-		ItemStack dBoots = new ItemStack(Material.DIAMOND_BOOTS, 1);
-		ItemStack dChestplate = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
-		ItemStack dLeggings = new ItemStack(Material.DIAMOND_LEGGINGS, 1);
-		inventory.addItem(d, dPickaxe, dSword, dHelmet, dBoots, dChestplate,
-				dLeggings, new ItemStack(Material.BREAD, 24));
-
+		inventory.addItem(dPickaxe, dSword, new ItemStack(Material.BREAD, 24),
+				d);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
