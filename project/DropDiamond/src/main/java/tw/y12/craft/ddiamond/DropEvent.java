@@ -1,11 +1,19 @@
 package tw.y12.craft.ddiamond;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -13,19 +21,47 @@ import org.bukkit.inventory.PlayerInventory;
 
 public class DropEvent implements Listener {
 
+	private static List<Block> getArenaBlocks(Location loc, int radius) {
+		World w = loc.getWorld();
+		int xCoord = (int) loc.getX();
+		int zCoord = (int) loc.getZ();
+		int YCoord = (int) loc.getY();
+
+		List<Block> tempList = new ArrayList<Block>();
+		for (int x = 0; x <= 2 * radius; x++) {
+			for (int z = 0; z <= 2 * radius; z++) {
+				for (int y = 0; y <= 2 * radius; y++) {
+					tempList.add(w.getBlockAt(xCoord + x, YCoord + y, zCoord
+							+ z));
+				}
+			}
+		}
+		return tempList;
+	}
+
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent evt) {
 		Player player = evt.getPlayer();
 		PlayerInventory inventory = player.getInventory();
+		ItemStack d = new ItemStack(Material.DIAMOND, 12);
 		ItemStack dPickaxe = new ItemStack(Material.DIAMOND_PICKAXE, 1);
+		ItemStack dAxe = new ItemStack(Material.DIAMOND_AXE, 1);
 		ItemStack dSword = new ItemStack(Material.DIAMOND_SWORD, 1);
 		ItemStack dHelmet = new ItemStack(Material.DIAMOND_HELMET, 1);
 		ItemStack dBoots = new ItemStack(Material.DIAMOND_BOOTS, 1);
 		ItemStack dChestplate = new ItemStack(Material.DIAMOND_CHESTPLATE, 1);
 		ItemStack dLeggings = new ItemStack(Material.DIAMOND_LEGGINGS, 1);
-		inventory.addItem(dPickaxe, dSword, dHelmet, dBoots, dChestplate,
+		inventory.addItem(d, dPickaxe, dSword, dHelmet, dBoots, dChestplate,
 				dLeggings, new ItemStack(Material.BREAD, 24));
 
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerDropItem(PlayerDropItemEvent event) {
+		Player player = event.getPlayer();
+		ItemStack itemStack = event.getItemDrop().getItemStack();
+		player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Drop "
+				+ itemStack);
 	}
 
 	@EventHandler
@@ -43,9 +79,8 @@ public class DropEvent implements Listener {
 		p.sendMessage(ChatColor.GREEN + p.getName()
 				+ " Get the one Diamond and pickaxe!");
 		PlayerInventory inventory = p.getInventory();
-		ItemStack gavediamondondeath = new ItemStack(Material.DIAMOND, 1);
-		ItemStack gavemediamondpickaxeondeath = new ItemStack(
-				Material.DIAMOND_PICKAXE, 1);
-		inventory.addItem(gavediamondondeath, gavemediamondpickaxeondeath);
+		ItemStack d = new ItemStack(Material.DIAMOND, 1);
+		ItemStack dPickaxe = new ItemStack(Material.DIAMOND_PICKAXE, 1);
+		inventory.addItem(d, dPickaxe);
 	}
 }
