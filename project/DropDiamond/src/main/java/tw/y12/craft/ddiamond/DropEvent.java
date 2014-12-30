@@ -68,7 +68,7 @@ public class DropEvent implements Listener {
 		int value = itemStack.getAmount();
 		player.sendMessage(ChatColor.YELLOW + "You got " + value + " "
 				+ ChatColor.AQUA + itemStack.getType().name());
-		if (itemStack.getType() == Material.COBBLESTONE) {
+		if (itemStack.getType() == Material.DIAMOND) {
 			switch (value) {
 			case 2:
 				player.sendMessage(ChatColor.YELLOW + "[Pick2]");
@@ -93,7 +93,7 @@ public class DropEvent implements Listener {
 						dLeggings);
 				break;
 			case 5:
-				Block findDiamondOre = findOneBlock(player.getLocation(), 30,
+				Block findDiamondOre = findOneBlock(player.getLocation(), 100,
 						Material.DIAMOND_ORE);
 				if (findDiamondOre != null) {
 					player.sendMessage(ChatColor.YELLOW + "[Diamond]"
@@ -111,7 +111,7 @@ public class DropEvent implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent evt) {
 		Player player = evt.getPlayer();
 		PlayerInventory inventory = player.getInventory();
-		inventory.addItem(new ItemStack(Material.IRON_PICKAXE, 1),
+		inventory.addItem(new ItemStack(Material.DIAMOND, 9), new ItemStack(Material.IRON_PICKAXE, 1),
 				new ItemStack(Material.TORCH, 64));
 	}
 
