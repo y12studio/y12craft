@@ -20,43 +20,70 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.google.common.collect.Ordering;
+
 public class DropEvent implements Listener {
 
-	private List<Block> getArenaBlocks(Location loc, int radius) {
+	private List<Block> findNearBlocks(Location loc, int radius, Material m) {
+		// http://minecraft.gamepedia.com/Coordinates
 		World w = loc.getWorld();
 		int xCoord = (int) loc.getX();
 		int zCoord = (int) loc.getZ();
 		int YCoord = (int) loc.getY();
 		List<Block> tempList = new ArrayList<Block>();
-		for (int x = 0; x <= 2 * radius; x++) {
-			for (int z = 0; z <= 2 * radius; z++) {
-				for (int y = 0; y <= 2 * radius; y++) {
-					Block block = w.getBlockAt(xCoord + x, YCoord + y, zCoord
-							+ z);
-					tempList.add(block);
+		for (int x = 0; x <= radius; x++) {
+			for (int z = 0; z <= radius; z++) {
+				for (int y = 0; y <= radius; y++) {
+
+					Block blockPlus = w.getBlockAt(xCoord + x, YCoord + y,
+							zCoord + z);
+					if (blockPlus != null) {
+						if (m != null && blockPlus.getType() == m) {
+							tempList.add(blockPlus);
+						} else {
+							tempList.add(blockPlus);
+						}
+					}
+
+					if (YCoord - y > 0) {
+						Block blockMinus = w.getBlockAt(xCoord - x, YCoord - y,
+								zCoord - z);
+						if (blockMinus != null) {
+							if (m != null && blockMinus.getType() == m) {
+								tempList.add(blockMinus);
+							} else {
+								tempList.add(blockMinus);
+							}
+						}
+
+					}
 				}
 			}
 		}
 		return tempList;
 	}
 
-	private Block findOneBlock(Location loc, int radius, Material m) {
-		World w = loc.getWorld();
-		int xCoord = (int) loc.getX();
-		int zCoord = (int) loc.getZ();
-		int YCoord = (int) loc.getY();
-		for (int x = 0; x <= 2 * radius; x++) {
-			for (int z = 0; z <= 2 * radius; z++) {
-				for (int y = 0; y <= 2 * radius; y++) {
-					Block block = w.getBlockAt(xCoord + x, YCoord + y, zCoord
-							+ z);
-					if (m != null && block.getType() == m) {
-						return block;
-					}
+	private double getDist(Location loc, Location bloc) {
+		double dx = loc.getX() - bloc.getX();
+		double dy = loc.getY() - bloc.getY();
+		double dz = loc.getZ() - bloc.getZ();
+		return Math.sqrt(dx * dx + dy * dy + dz * dz);
+	}
+
+	private Block findNearestBlock(final Location loc, int radius, Material m) {
+		List<Block> blist = findNearBlocks(loc, radius, m);
+		if (blist != null && blist.size() > 0) {
+			Ordering<Block> o = new Ordering<Block>() {
+				@Override
+				public int compare(Block left, Block right) {
+					return Double.compare(getDist(loc, left.getLocation()),
+							getDist(loc, right.getLocation()));
 				}
-			}
+			};
+			return o.min(blist);
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 	@EventHandler(ignoreCancelled = false, priority = EventPriority.MONITOR)
@@ -93,8 +120,8 @@ public class DropEvent implements Listener {
 						dLeggings);
 				break;
 			case 5:
-				Block findDiamondOre = findOneBlock(player.getLocation(), 100,
-						Material.DIAMOND_ORE);
+				Block findDiamondOre = findNearestBlock(player.getLocation(),
+						100, Material.DIAMOND_ORE);
 				if (findDiamondOre != null) {
 					player.sendMessage(ChatColor.YELLOW + "[Diamond]"
 							+ findDiamondOre.getLocation());
@@ -111,8 +138,8 @@ public class DropEvent implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent evt) {
 		Player player = evt.getPlayer();
 		PlayerInventory inventory = player.getInventory();
-		inventory.addItem(new ItemStack(Material.DIAMOND, 9), new ItemStack(Material.IRON_PICKAXE, 1),
-				new ItemStack(Material.TORCH, 64));
+		inventory.addItem(new ItemStack(Material.DIAMOND, 9), new ItemStack(
+				Material.IRON_PICKAXE, 1), new ItemStack(Material.TORCH, 64));
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
