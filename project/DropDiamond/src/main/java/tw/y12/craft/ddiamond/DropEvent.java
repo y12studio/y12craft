@@ -93,9 +93,11 @@ public class DropEvent implements Listener {
 						dLeggings);
 				break;
 			case 5:
-				Block findDiamondOre = findOneBlock(player.getLocation(), 30, Material.DIAMOND_ORE);
-				if(findDiamondOre!=null){
-					player.sendMessage(ChatColor.YELLOW + "[Diamond]"+findDiamondOre.getLocation());
+				Block findDiamondOre = findOneBlock(player.getLocation(), 30,
+						Material.DIAMOND_ORE);
+				if (findDiamondOre != null) {
+					player.sendMessage(ChatColor.YELLOW + "[Diamond]"
+							+ findDiamondOre.getLocation());
 				}
 				break;
 
@@ -109,7 +111,8 @@ public class DropEvent implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent evt) {
 		Player player = evt.getPlayer();
 		PlayerInventory inventory = player.getInventory();
-		inventory.addItem(new ItemStack(Material.IRON_PICKAXE, 1));
+		inventory.addItem(new ItemStack(Material.IRON_PICKAXE, 1),
+				new ItemStack(Material.TORCH, 64));
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
