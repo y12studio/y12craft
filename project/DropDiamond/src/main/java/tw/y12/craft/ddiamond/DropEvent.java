@@ -15,13 +15,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public class DropEvent implements Listener {
 
-	private static List<Block> getArenaBlocks(Location loc, int radius) {
+	private List<Block> getArenaBlocks(Location loc, int radius) {
 		World w = loc.getWorld();
 		int xCoord = (int) loc.getX();
 		int zCoord = (int) loc.getZ();
@@ -37,6 +38,20 @@ public class DropEvent implements Listener {
 			}
 		}
 		return tempList;
+	}
+
+	@EventHandler(ignoreCancelled = false, priority = EventPriority.MONITOR)
+	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+		if (event.isCancelled())
+			return;
+		Player player = event.getPlayer();
+		ItemStack itemStack = event.getItem().getItemStack();
+		int value = itemStack.getAmount();
+		player.sendMessage(ChatColor.YELLOW + "You got " + value + " "
+				+ ChatColor.AQUA + itemStack.getType().name());
+		if (itemStack.getType() == Material.DIAMOND && value == 3) {
+			player.sendMessage(ChatColor.YELLOW + "[TODO]");
+		}
 	}
 
 	@EventHandler
