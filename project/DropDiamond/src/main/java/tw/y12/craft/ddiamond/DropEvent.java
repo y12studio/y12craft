@@ -27,17 +27,36 @@ public class DropEvent implements Listener {
 		int xCoord = (int) loc.getX();
 		int zCoord = (int) loc.getZ();
 		int YCoord = (int) loc.getY();
-
 		List<Block> tempList = new ArrayList<Block>();
 		for (int x = 0; x <= 2 * radius; x++) {
 			for (int z = 0; z <= 2 * radius; z++) {
 				for (int y = 0; y <= 2 * radius; y++) {
-					tempList.add(w.getBlockAt(xCoord + x, YCoord + y, zCoord
-							+ z));
+					Block block = w.getBlockAt(xCoord + x, YCoord + y, zCoord
+							+ z);
+					tempList.add(block);
 				}
 			}
 		}
 		return tempList;
+	}
+
+	private Block findOneBlock(Location loc, int radius, Material m) {
+		World w = loc.getWorld();
+		int xCoord = (int) loc.getX();
+		int zCoord = (int) loc.getZ();
+		int YCoord = (int) loc.getY();
+		for (int x = 0; x <= 2 * radius; x++) {
+			for (int z = 0; z <= 2 * radius; z++) {
+				for (int y = 0; y <= 2 * radius; y++) {
+					Block block = w.getBlockAt(xCoord + x, YCoord + y, zCoord
+							+ z);
+					if (m != null && block.getType() == m) {
+						return block;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	@EventHandler(ignoreCancelled = false, priority = EventPriority.MONITOR)
@@ -49,9 +68,21 @@ public class DropEvent implements Listener {
 		int value = itemStack.getAmount();
 		player.sendMessage(ChatColor.YELLOW + "You got " + value + " "
 				+ ChatColor.AQUA + itemStack.getType().name());
-		if (itemStack.getType() == Material.DIAMOND) {
-			if (value == 4) {
-				player.sendMessage(ChatColor.YELLOW + "[Pick4Diamond]");
+		if (itemStack.getType() == Material.COBBLESTONE) {
+			switch (value) {
+			case 2:
+				player.sendMessage(ChatColor.YELLOW + "[Pick2]");
+				player.getInventory().addItem(new ItemStack(Material.BREAD, 2));
+				break;
+			case 3:
+				player.sendMessage(ChatColor.YELLOW + "[Pick3]");
+				ItemStack dAxe = new ItemStack(Material.DIAMOND_AXE, 1);
+				ItemStack dPickaxe = new ItemStack(Material.DIAMOND_PICKAXE, 1);
+				ItemStack dSword = new ItemStack(Material.DIAMOND_SWORD, 1);
+				player.getInventory().addItem(dAxe, dPickaxe, dSword);
+				break;
+			case 4:
+				player.sendMessage(ChatColor.YELLOW + "[Pick4]");
 				ItemStack dHelmet = new ItemStack(Material.DIAMOND_HELMET, 1);
 				ItemStack dBoots = new ItemStack(Material.DIAMOND_BOOTS, 1);
 				ItemStack dChestplate = new ItemStack(
@@ -60,8 +91,16 @@ public class DropEvent implements Listener {
 						1);
 				player.getInventory().addItem(dHelmet, dBoots, dChestplate,
 						dLeggings);
-			} else if (value == 5) {
-				// TODO
+				break;
+			case 5:
+				Block findDiamondOre = findOneBlock(player.getLocation(), 30, Material.DIAMOND_ORE);
+				if(findDiamondOre!=null){
+					player.sendMessage(ChatColor.YELLOW + "[Diamond]"+findDiamondOre.getLocation());
+				}
+				break;
+
+			default:
+				break;
 			}
 		}
 	}
@@ -70,12 +109,7 @@ public class DropEvent implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent evt) {
 		Player player = evt.getPlayer();
 		PlayerInventory inventory = player.getInventory();
-		ItemStack d = new ItemStack(Material.DIAMOND, 12);
-		ItemStack dPickaxe = new ItemStack(Material.DIAMOND_PICKAXE, 1);
-		ItemStack dAxe = new ItemStack(Material.DIAMOND_AXE, 1);
-		ItemStack dSword = new ItemStack(Material.DIAMOND_SWORD, 1);
-		inventory.addItem(dPickaxe, dSword, new ItemStack(Material.BREAD, 24),
-				d);
+		inventory.addItem(new ItemStack(Material.IRON_PICKAXE, 1));
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -98,11 +132,10 @@ public class DropEvent implements Listener {
 	public void onPlayerRespawn(PlayerRespawnEvent dead) {
 		Player p = dead.getPlayer();
 		p.sendMessage(ChatColor.RED + "You are dead " + p.getName());
-		p.sendMessage(ChatColor.GREEN + p.getName()
-				+ " Get the one Diamond and pickaxe!");
+		p.sendMessage(ChatColor.GREEN + p.getName() + " Get the one Diamond!");
 		PlayerInventory inventory = p.getInventory();
 		ItemStack d = new ItemStack(Material.DIAMOND, 1);
-		ItemStack dPickaxe = new ItemStack(Material.DIAMOND_PICKAXE, 1);
-		inventory.addItem(d, dPickaxe);
+		// ItemStack dPickaxe = new ItemStack(Material.DIAMOND_PICKAXE, 1);
+		inventory.addItem(d);
 	}
 }
