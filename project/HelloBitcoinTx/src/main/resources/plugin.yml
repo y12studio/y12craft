@@ -1,0 +1,3 @@
+name: Y12CraftHelloBitcoinTx
+version: 1.0
+main: tw.y12.craft.hbitcointx.PluginMain
