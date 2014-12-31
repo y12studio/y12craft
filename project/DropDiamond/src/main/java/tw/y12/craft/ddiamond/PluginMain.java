@@ -17,13 +17,14 @@ public class PluginMain extends JavaPlugin {
 		yRecipeDiamond.shape("D D", "DCD", " C ");
 		yRecipeDiamond.setIngredient('D', Material.DIRT);
 		yRecipeDiamond.setIngredient('C', Material.COBBLESTONE);
-		getServer().addRecipe(yRecipeDiamond);
 
-		ShapedRecipe yRecipeTnt = new ShapedRecipe(new ItemStack(
-				Material.SULPHUR, 4)).shape("W W", "WCW", " C ")
+		ShapedRecipe yRecipeGunpowder = new ShapedRecipe(new ItemStack(
+				Material.IRON_INGOT, 4)).shape("W W", "WCW", " C ")
 				.setIngredient('W', Material.WOOD)
 				.setIngredient('C', Material.COBBLESTONE);
-		getServer().addRecipe(yRecipeTnt);
+		
+		getServer().addRecipe(yRecipeGunpowder);
+		getServer().addRecipe(yRecipeDiamond);
 	}
 
 	public void onEnable() {
