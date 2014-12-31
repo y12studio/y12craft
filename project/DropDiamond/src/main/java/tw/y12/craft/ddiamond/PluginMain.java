@@ -18,12 +18,12 @@ public class PluginMain extends JavaPlugin {
 		yRecipeDiamond.setIngredient('D', Material.DIRT);
 		yRecipeDiamond.setIngredient('C', Material.COBBLESTONE);
 
-		ShapedRecipe yRecipeGunpowder = new ShapedRecipe(new ItemStack(
-				Material.IRON_INGOT, 4)).shape("W W", "WCW", " C ")
-				.setIngredient('W', Material.WOOD)
+		ShapedRecipe yRecipeTnt = new ShapedRecipe(new ItemStack(
+				Material.TNT, 4)).shape("D D", "DCD", "DCD")
+				.setIngredient('D', Material.DIRT)
 				.setIngredient('C', Material.COBBLESTONE);
 		
-		getServer().addRecipe(yRecipeGunpowder);
+		getServer().addRecipe(yRecipeTnt);
 		getServer().addRecipe(yRecipeDiamond);
 	}
 
