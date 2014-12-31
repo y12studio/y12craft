@@ -24,7 +24,8 @@ import com.google.common.collect.Ordering;
 
 public class DropEvent implements Listener {
 
-	private List<Block> findNearBlocks(Location loc, int radius, Material m) {
+	private List<Block> findNearBlocks(Location loc, int radius,
+			Material material) {
 		// http://minecraft.gamepedia.com/Coordinates
 		World w = loc.getWorld();
 		int xCoord = (int) loc.getX();
@@ -34,15 +35,12 @@ public class DropEvent implements Listener {
 		for (int x = -radius; x < radius; x++) {
 			for (int z = -radius; z < radius; z++) {
 				for (int y = -radius; y < radius; y++) {
-					if (yCoord + y > 0 && Math.abs(y)>1 && Math.abs(z)>1 && Math.abs(x)>1) {
-						Block blockPlus = w.getBlockAt(xCoord + x, yCoord + y,
+					if (yCoord + y > 0 && Math.abs(y) > 1 && Math.abs(z) > 1
+							&& Math.abs(x) > 1) {
+						Block block = w.getBlockAt(xCoord + x, yCoord + y,
 								zCoord + z);
-						if (blockPlus != null) {
-							if (m != null && blockPlus.getType() == m) {
-								tempList.add(blockPlus);
-							} else {
-								tempList.add(blockPlus);
-							}
+						if (block != null && block.getType() == material) {
+							tempList.add(block);
 						}
 					}
 				}
@@ -111,7 +109,7 @@ public class DropEvent implements Listener {
 				Block dOre = findNearestBlock(player.getLocation(), 100,
 						Material.DIAMOND_ORE);
 				if (dOre != null) {
-					player.sendMessage(ChatColor.YELLOW + "[Get "
+					player.sendMessage(ChatColor.YELLOW + "[Found "
 							+ dOre.getType().name() + "]" + dOre.getLocation());
 				}
 				break;
