@@ -29,33 +29,21 @@ public class DropEvent implements Listener {
 		World w = loc.getWorld();
 		int xCoord = (int) loc.getX();
 		int zCoord = (int) loc.getZ();
-		int YCoord = (int) loc.getY();
+		int yCoord = (int) loc.getY();
 		List<Block> tempList = new ArrayList<Block>();
-		for (int x = 0; x <= radius; x++) {
-			for (int z = 0; z <= radius; z++) {
-				for (int y = 0; y <= radius; y++) {
-
-					Block blockPlus = w.getBlockAt(xCoord + x, YCoord + y,
-							zCoord + z);
-					if (blockPlus != null) {
-						if (m != null && blockPlus.getType() == m) {
-							tempList.add(blockPlus);
-						} else {
-							tempList.add(blockPlus);
-						}
-					}
-
-					if (YCoord - y > 0) {
-						Block blockMinus = w.getBlockAt(xCoord - x, YCoord - y,
-								zCoord - z);
-						if (blockMinus != null) {
-							if (m != null && blockMinus.getType() == m) {
-								tempList.add(blockMinus);
+		for (int x = -radius; x < radius; x++) {
+			for (int z = -radius; z < radius; z++) {
+				for (int y = -radius; y < radius; y++) {
+					if (yCoord + y > 0 && Math.abs(y)>1 && Math.abs(z)>1 && Math.abs(x)>1) {
+						Block blockPlus = w.getBlockAt(xCoord + x, yCoord + y,
+								zCoord + z);
+						if (blockPlus != null) {
+							if (m != null && blockPlus.getType() == m) {
+								tempList.add(blockPlus);
 							} else {
-								tempList.add(blockMinus);
+								tempList.add(blockPlus);
 							}
 						}
-
 					}
 				}
 			}
@@ -120,11 +108,11 @@ public class DropEvent implements Listener {
 						dLeggings);
 				break;
 			case 5:
-				Block findDiamondOre = findNearestBlock(player.getLocation(),
-						100, Material.DIAMOND_ORE);
-				if (findDiamondOre != null) {
-					player.sendMessage(ChatColor.YELLOW + "[Diamond]"
-							+ findDiamondOre.getLocation());
+				Block dOre = findNearestBlock(player.getLocation(), 100,
+						Material.DIAMOND_ORE);
+				if (dOre != null) {
+					player.sendMessage(ChatColor.YELLOW + "[Get "
+							+ dOre.getType().name() + "]" + dOre.getLocation());
 				}
 				break;
 
