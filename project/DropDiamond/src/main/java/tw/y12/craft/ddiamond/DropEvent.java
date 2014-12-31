@@ -128,7 +128,11 @@ public class DropEvent implements Listener {
 		Player player = evt.getPlayer();
 		PlayerInventory inventory = player.getInventory();
 		inventory.addItem(new ItemStack(Material.DIAMOND, 9), new ItemStack(
-				Material.IRON_PICKAXE, 1), new ItemStack(Material.TORCH, 64));
+				Material.IRON_PICKAXE, 1), 
+				new ItemStack(Material.IRON_INGOT, 2),
+				new ItemStack(Material.FLINT, 1),
+				new ItemStack(Material.TORCH, 64)
+		);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

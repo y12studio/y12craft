@@ -11,11 +11,18 @@ public class PluginMain extends JavaPlugin{
 	private static Plugin _pi;
 
 	private void addRecipe(){
-		  ShapedRecipe yRecipe=new ShapedRecipe(new ItemStack(Material.DIAMOND,1));
-		  yRecipe.shape(new String[]{"X X","XSX"," S "});
-		  yRecipe.setIngredient('X',Material.DIRT);
-		  yRecipe.setIngredient('D',Material.COBBLESTONE);
-		  getServer().addRecipe(yRecipe);
+
+		ShapedRecipe yRecipeDiamond=new ShapedRecipe(new ItemStack(Material.DIAMOND,1));
+		  yRecipeDiamond.shape("D D","DCD"," C ");
+		  yRecipeDiamond.setIngredient('D',Material.DIRT);
+		  yRecipeDiamond.setIngredient('C',Material.COBBLESTONE);
+		  getServer().addRecipe(yRecipeDiamond);
+		 
+		  ShapedRecipe yRecipeTnt=new ShapedRecipe(new ItemStack(Material.TNT,1));
+		  yRecipeTnt.shape("W W","WCW"," C ");
+		  yRecipeTnt.setIngredient('W',Material.WOOD);
+		  yRecipeTnt.setIngredient('C',Material.COBBLESTONE);
+		  getServer().addRecipe(yRecipeTnt);
 	}
 
 	public void onEnable() {
